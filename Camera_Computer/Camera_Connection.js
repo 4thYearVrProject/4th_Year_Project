@@ -1,4 +1,5 @@
 const peerConnections = {};
+let numberOfWatchers = 0;
 const config = {
   iceServers: [
     { 
@@ -19,6 +20,7 @@ socket.on("answer", (id, description) => {
 });
 
 socket.on("watcher", id => {
+  numberOfWatchers += 1;
   const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
 
@@ -31,6 +33,10 @@ socket.on("watcher", id => {
     }
   };
 
+  peerConnection.addEventListener('connectionstatechange', event => {
+    updateConnection(peerConnections[id],numberOfWatchers);
+  });
+
   peerConnection
     .createOffer()
     .then(sdp => peerConnection.setLocalDescription(sdp))
@@ -40,11 +46,14 @@ socket.on("watcher", id => {
 });
 
 socket.on("candidate", (id, candidate) => {
+  updateConnection(peerConnections[id],numberOfWatchers);
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
 });
 
 socket.on("disconnectPeer", id => {
   peerConnections[id].close();
+  numberOfWatchers -= 1;
+  updateConnection(peerConnections[id],numberOfWatchers);
   delete peerConnections[id];
 });
 
@@ -52,39 +61,23 @@ window.onunload = window.onbeforeunload = () => {
   socket.close();
 };
 
-getStream()
-  .then(getDevices)
-  .then(gotDevices);
-
-function getStream() {
-    if (window.stream) {
-      window.stream.getTracks().forEach(track => {
-        track.stop();
-      });
-    }
-    const audioSource = audioSelect.value;
-    const videoSource = videoSelect.value;
-    const constraints = {
-      audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
-      video: { deviceId: videoSource ? { exact: videoSource } : undefined }
-    };
-    return navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then(gotStream)
-      .catch(handleError);
+function updateConnection(connection, numberOfWatchers){
+  console.log("connection ", connection.connectionState);
+  document.getElementById("numOfWatchers").innerHTML = "Number of Watchers: " + numberOfWatchers;
+  if(connection.connectionState === "connected"){
+    document.getElementById("circle").style.background = "green";
+    document.getElementById("connectionStatus").innerHTML = connection.connectionState;
   }
-function gotStream(stream) {
-    window.stream = stream;
-    audioSelect.selectedIndex = [...audioSelect.options].findIndex(
-      option => option.text === stream.getAudioTracks()[0].label
-    );
-    videoSelect.selectedIndex = [...videoSelect.options].findIndex(
-      option => option.text === stream.getVideoTracks()[0].label
-    );
-    videoElement.srcObject = stream;
-    socket.emit("broadcaster");
+  if(connection.connectionState === "connecting"){
+    document.getElementById("circle").style.background = "yellow";
+    document.getElementById("connectionStatus").innerHTML = connection.connectionState;
   }
-
-function handleError(error) {
-  console.error("Error: ", error);
+  if(connection.connectionState === "new"){
+    document.getElementById("circle").style.background = "blue";
+    document.getElementById("connectionStatus").innerHTML = connection.connectionState;
+  }
+  if(numberOfWatchers === 0){
+    document.getElementById("circle").style.background = "red";
+    document.getElementById("connectionStatus").innerHTML = connection.connectionState;
+  }
 }

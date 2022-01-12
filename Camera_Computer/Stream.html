@@ -3,6 +3,7 @@
   <head>
     <title>Broadcaster</title>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/styles.css">
   </head>
   <body>
     <section class="select">
@@ -20,5 +21,11 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="Camera_Start.js"></script>
     <script src="Camera_Connection.js"></script>
+
+    <div id="connection">
+      <span id="circle"></span>
+      <label id="connectionStatus">closed</label>
+      <span id="numOfWatchers">Number of Watchers: 0</span>
+    </div>
   </body>
 </html>
