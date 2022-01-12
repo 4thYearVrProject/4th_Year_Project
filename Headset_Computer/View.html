@@ -3,10 +3,23 @@
   <head>
     <title>Viewer</title>
     <meta charset="UTF-8" />
+	<link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <video playsinline autoplay muted></video>
-    <button id="enable-audio">Enable audio</button>
+	<h1>Click Video to open fullscreen</h1>  
+	<video id="Video" onclick="fullscreen();" playsinline autoplay muted></video>
+	<script>
+		var elem = document.getElementById("Video");
+		function fullscreen() {
+		  if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		  } else if (elem.webkitRequestFullscreen) { /* Safari */
+			elem.webkitRequestFullscreen();
+		  } else if (elem.msRequestFullscreen) { /* IE11 */
+			elem.msRequestFullscreen();
+		  }
+		}
+</script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="HS_Connection.js"></script>
   </body>

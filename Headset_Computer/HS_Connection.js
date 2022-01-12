@@ -14,9 +14,7 @@ const config = {
 
 const socket = io.connect(window.location.origin);
 const video = document.querySelector("video");
-const enableAudioButton = document.querySelector("#enable-audio");
 
-enableAudioButton.addEventListener("click", enableAudio)
 
 socket.on("offer", (id, description) => {
   peerConnection = new RTCPeerConnection(config);

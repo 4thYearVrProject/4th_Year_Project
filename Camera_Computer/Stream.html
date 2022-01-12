@@ -14,8 +14,9 @@
       <label for="videoSource">Video source: </label>
       <select id="videoSource"></select>
     </section>
-
-    <video playsinline autoplay muted></video>
+	<div id="player">
+		<video autoplay muted></video>
+	</div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="Camera_Start.js"></script>
     <script src="Camera_Connection.js"></script>
