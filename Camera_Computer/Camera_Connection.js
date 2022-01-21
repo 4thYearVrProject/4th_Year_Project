@@ -50,19 +50,11 @@ socket.on("candidate", (id, candidate) => {
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
 });
 
-socket.on("disconnectPeer", id => {
-  peerConnections[id].close();
-  numberOfWatchers -= 1;
-  updateConnection(peerConnections[id],numberOfWatchers);
-  delete peerConnections[id];
-});
-
 window.onunload = window.onbeforeunload = () => {
   socket.close();
 };
 
 function updateConnection(connection, numberOfWatchers){
-  console.log("connection ", connection.connectionState);
   document.getElementById("numOfWatchers").innerHTML = "Number of Watchers: " + numberOfWatchers;
   if(connection.connectionState === "connected"){
     document.getElementById("circle").style.background = "green";
