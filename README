@@ -16,7 +16,7 @@ How to run:
             The computer with the headset
                 Grab the IP address of the camera computer from the vpn
                     In LogMeIn Hamachi right click the computer you can copy the ip from there
-                Computer can fo to: http://<INSERT CAMERA COMPUTER IP ADDRESS>/Headset_Computer/View.html 
+                Computer can fo to: http://<INSERT CAMERA COMPUTER IP ADDRESS>:4040/Headset_Computer/View.html 
 
 
 How to terminate:
