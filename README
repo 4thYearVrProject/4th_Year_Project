@@ -1,0 +1,24 @@
+Camera_Computer:
+
+Headset_Computer:
+
+
+How to run:
+    The 2 computers need to both have access to the codebase
+    The 2 computers need to be on a Local network
+        We recommend LogMeIn Hamachi, one computer will run the vpn the second will join the vpn
+        When the 2 computers are on the same local network  
+            The computer with the camera will start the server; 
+                in command line in the project directory type: node server
+                    Result: "Server is running on port 4040"
+                Computer can go to: http://localhost:4040/Camera_Computer/Stream.html
+
+            The computer with the headset
+                Grab the IP address of the camera computer from the vpn
+                    In LogMeIn Hamachi right click the computer you can copy the ip from there
+                Computer can fo to: http://<INSERT CAMERA COMPUTER IP ADDRESS>/Headset_Computer/View.html 
+
+
+How to terminate:
+    The Camera Computer is the one running the connection at anypoint this computer can just close the stream browser and the commection will be terminated
+    The Headset Computer can end its connection to the by closing the view browser; Camera Computer will look for new connections
