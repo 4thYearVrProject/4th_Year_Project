@@ -9,7 +9,7 @@
 1. Download the codebase, and install the dependencies using
 
 ```console
-
+npm install
 ```
 
 2. The devices must run on the same local network. To connect computer to the same local network, LogMeIn Hamachi is used. The streaming computer should host the VPN.
@@ -31,20 +31,14 @@ Server is running on port 4040
 
 On this page the video and audio sources can be selected.
 
-5. The stream can be terminated by closing the browser window.
+5. The stream can be terminated by closing the browser window and the console server.
 
 ## Connecting to the stream
 
-1. Download the codebase, and install the dependencies using
+1. The devices must run on the same local network. To connect computer to the same local network, LogMeIn Hamachi is used. The viewing computer will connect to the VPN created by the streaming computer.
 
-```console
+2. The viewing computer can then connect to the stream by connecting to the url below, after replacing the IP address with the IP address from LogMeIn Hamachi.
 
-```
+   > http://(Host IP Address):4040/Headset_Computer/View.html
 
-2. The devices must run on the same local network. To connect computer to the same local network, LogMeIn Hamachi is used. The viewing computer will connect to the VPN created by the streaming computer.
-
-3. The viewing computer can then connect to the stream by connecting to the url below, after replacing the IP address with the IP address from LogMeIn Hamachi.
-
-   > http://<INSERT CAMERA COMPUTER IP ADDRESS>:4040/Headset_Computer/View.html
-
-4. The viewing can be terminated by closing the browser window.
+3. The viewing can be terminated by closing the browser window.
