@@ -6,30 +6,44 @@
 	<link rel="stylesheet" href="style.css">
   </head>
   <body>
-	<a-scene>
-		<a-assets>
-		</a-assets>
-		<a-entity environment="preset: forest" class="video-holder">
-		  <a-entity camera="active: true" look-controls wasd-controls position="0 0 0" data-aframe-default-camera></a-entity>
-		  <a-entity daydream-controls></a-entity>
-		  <a-entity>
-	</a-scene>
-	<h1>Click Video to open fullscreen</h1> 
-	<video id="Video" onclick="fullscreen();" playsinline autoplay muted></video>
-	<script>
-		var elem = document.getElementById("Video");
-		function fullscreen() {
-		  if (elem.requestFullscreen) {
-			elem.requestFullscreen();
-		  } else if (elem.webkitRequestFullscreen) { /* Safari */
-			elem.webkitRequestFullscreen();
-		  } else if (elem.msRequestFullscreen) { /* IE11 */
-			elem.msRequestFullscreen();
-		  }
-		}
-</script>
+    <a-scene>
+      <a-assets> </a-assets>
+      <a-entity environment="preset: forest" class="video-holder">
+        <a-entity
+          camera="active: true"
+          look-controls
+          wasd-controls
+          position="0 0 0"
+          data-aframe-default-camera
+        ></a-entity>
+        <a-entity daydream-controls></a-entity>
+      </a-entity>
+    </a-scene>
+    <h1>Click Video to open fullscreen</h1>
+    <video
+      id="Video"
+      onclick="fullscreen();"
+      playsinline
+      autoplay
+      muted
+    ></video>
+    <script>
+      var elem = document.getElementById("Video");
+      function fullscreen() {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+          /* Safari */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+          /* IE11 */
+          elem.msRequestFullscreen();
+        }
+      }
+    </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="HS_Connection.js"></script>
+    <script src="HS_Connection_Controller.js"></script>
 
 	<!-- Starting an immersive WebXR session requires user interaction. Start the WebXR experience with a simple button. -->
 	<a onclick="activateXR()" class="mdc-button mdc-button--raised mdc-button--accent">
@@ -37,4 +51,4 @@
 	</a>
 
   </body>
-</html> 
+</html>
