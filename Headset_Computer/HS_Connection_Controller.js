@@ -1,5 +1,3 @@
-
-
 class VREnviroment{
     activateXR = async () => {
         try{
