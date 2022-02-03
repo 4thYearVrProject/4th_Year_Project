@@ -12,7 +12,8 @@
   ],
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^4.0.1"
+    "socket.io": "^4.0.1",
+    "webxr": "0.0.0"
   },
   "devDependencies": {
     "eslint": "8.0.1"
