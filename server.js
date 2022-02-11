@@ -4,13 +4,8 @@ const app = express();
 let broadcaster;
 const port = 4040;
 
-const https = require("https");
-const fs = require('fs');
-const options = {
-	key: fs.readFileSync('key.pem'),
-	cert: fs.readFileSync('cert.pem')
-};
-const server = https.createServer(options, app);
+const http = require("http");
+const server = http.createServer(app);
 
 const io = require("socket.io")(server);
 app.use(express.static(__dirname));
