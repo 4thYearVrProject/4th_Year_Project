@@ -3,27 +3,24 @@
   <head>
     <title>Viewer</title>
     <meta charset="UTF-8" />
-	<link rel="stylesheet" href="/css/styles.css">
-	<script src="https://unpkg.com/three@0.123.0/build/three.js"></script>
-    <script src="https://unpkg.com/three@0.123.0/examples/js/loaders/GLTFLoader.js"></script>
-	
+	<link rel="stylesheet" href="style.css">
   </head>
   <body>
-
-	<div id="wrapper">
-		<video id="Video" playsinline autoplay muted></video>
-
-		<div id="container"></div>
-
-		<div id="vrButton"></div>
-	</div>
-
-	</script>
+	<h1>Click Video to open fullscreen</h1>  
+	<video id="Video" onclick="fullscreen();" playsinline autoplay muted></video>
+	<script>
+		var elem = document.getElementById("Video");
+		function fullscreen() {
+		  if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		  } else if (elem.webkitRequestFullscreen) { /* Safari */
+			elem.webkitRequestFullscreen();
+		  } else if (elem.msRequestFullscreen) { /* IE11 */
+			elem.msRequestFullscreen();
+		  }
+		}
+</script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="HS_Connection.js"></script>
-
-	<!-- Starting an immersive WebXR session requires user interaction. Start the WebXR experience with a simple button. -->
-	<script type="module" src="HS_Connection_Controller.js"></script>
-
   </body>
-</html>
+</html> 

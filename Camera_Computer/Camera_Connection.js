@@ -64,16 +64,6 @@ socket.on("candidate", (id, candidate) => {
 window.onunload = window.onbeforeunload = () => {
   socket.close();
 };
-socket.on("disconnectPeer", id => {
-  peerConnections[id].close();
-  numberOfWatchers -= 1;
-  updateConnection(peerConnections[id],numberOfWatchers);
-  delete peerConnections[id];
-});
-
-function updateConnection(connection, numberOfWatchers){
-  document.getElementById("numOfWatchers").innerHTML = "Number of Watchers: " + numberOfWatchers;
-  if(connection.connectionState === "connected"){
 
 /**
  * Updates the HTML page based on the connection status of given peer
