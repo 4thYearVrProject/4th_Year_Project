@@ -1,38 +1,11 @@
 import * as THREE from '../Open_Source_Code/three.js/build/three.module.js';
 import { VRButton } from '../Open_Source_Code/three.js/VRButton.js';
 
+let camera, scene, renderer;
+
 class VREnviroment{
-    activateXR = async () => {
-        try{
-        // Initialize a WebXR session using "immersive-ar".
-        this.xrSession = await navigator.xr.requestSession("immersive-vr");
-        // Create the canvas that will contain our camera's background and our virtual scene.
-        this.createXRCanvas();
 
-      // With everything set up, start the app.
-        await this.onSessionStarted();
-        } catch(e) {
-            console.log(e);
-            //onNoXRDevice();
-        } 
-    }
-    createXRCanvas = async () => {
-        this.canvas = document.createElement("canvas");
-        document.body.appendChild(this.canvas);
-        this.gl = this.canvas.getContext("webgl", {xrCompatible: true});
-        this.xrSession.updateRenderState({baseLayer: new XRWebGLLayer(this.xrSession, this.gl)});
-
-    }
-    onSessionStarted = async () => {
-        this.setupThreeJs();
-        this.localReferenceSpace = await this.xrSession.requestReferenceSpace("local");
-        this.viewerSpace = await this.xrSession.requestReferenceSpace('viewer');
-        // Queue up the next draw request.
-        this.xrSession.requestAnimationFrame(this.animate);
-      //  this.animate();
-        
-    }
-    setupThreeJs(){
+    setup(){
         const container = document.getElementById( 'container' );
 			container.addEventListener( 'click', function () {
 
@@ -47,6 +20,7 @@ class VREnviroment{
 
         //Video
         const video = document.getElementById( 'Video' );
+        video.play();
         const texture = new THREE.VideoTexture( video );
 
         //Left
@@ -89,50 +63,41 @@ class VREnviroment{
 		meshRight.layers.set( 2 ); // display in right eye only
 		scene.add( meshRight );
 
-
         //
 
-        this.renderer = new THREE.WebGLRenderer({
-            canvas: this.canvas,
-            context: this.gl
-          });
-
-        this.renderer.setPixelRatio( window.devicePixelRatio );
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.xr.enabled = true;
 		renderer.xr.setReferenceSpaceType( 'local' );
-          
-        // document.addEventListener( 'pointerdown', this.onPointerDown);
-        // document.addEventListener( 'pointermove', this.onPointerMove);
-        // document.addEventListener( 'pointerup', this.onPointerUp);
+
         container.appendChild( renderer.domElement );
-        document.body.appendChild( VRButton.createButton( renderer ) );
+
+        const vrButton = document.getElementById( 'vrButton' );
+        vrButton.appendChild( VRButton.createButton( renderer ) );
+
+        this.animate()
 
         window.addEventListener( 'resize', this.onWindowResize);
     }
-    animate = ()=>{
-        // this.xrSession.requestAnimationFrame(this.animate);
-        // const framebuffer = this.xrSession.renderState.baseLayer.framebuffer
-        // this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, framebuffer)
 
-        // this.renderer.setFramebuffer(framebuffer);
-        // this.renderer.render(scene, camera)
-        this.renderer.setAnimationLoop( this.renderer.render(scene, camera) );
-
+    animate() {
+        renderer.setAnimationLoop(this.update);
     }
 
+    update() {
+        renderer.render( scene, camera );
+    }
 
     onWindowResize() {
-
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
 
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
-
+        renderer.setSize(window.innerWidth, window.innerHeight);
     }
-
-
-
 }; 
 window.app = new VREnviroment();
-let camera, scene;
+var vr = new VREnviroment();
+vr.setup();
+
+
