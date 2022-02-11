@@ -1,21 +1,22 @@
 {
-    "name": "4th_Year_Project",
-    "version": "1.0.0",
-    "description": "WebRTC for a video broadcast",
-    "main": "server.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [
-      "WebRTC",
-      "SocketIO"
-    ],
-    "dependencies": {
-      "express": "^4.17.1",
-      "socket.io": "^4.0.1"
-    },
-    "devDependencies": {
-      "eslint": "8.0.1"
-    }
+  "name": "4th_Year_Project",
+  "version": "1.0.0",
+  "description": "WebRTC for a video broadcast",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "WebRTC",
+    "SocketIO"
+  ],
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1",
+    "three": "^0.137.5",
+    "webxr": "0.0.0"
+  },
+  "devDependencies": {
+    "eslint": "8.0.1"
   }
-  
+}
