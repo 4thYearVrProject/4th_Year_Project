@@ -1,6 +1,7 @@
 import * as THREE from '../Open_Source_Code/three.js/build/three.module.js';
 import { VRButton } from '../Open_Source_Code/three.js/VRButton.js';
 import { XRControllerModelFactory } from '../Open_Source_Code/three.js/XRControllerModelFactory.js';
+import '../Headset_Computer/HS_Connection.js';
 //import WebXRPolyfill from './js/third-party/webxr-polyfill/build/webxr-polyfill.module.js';
 
 let camera, scene, renderer;
@@ -102,12 +103,7 @@ class VREnviroment{
     }
 
     setUpController() {
-        // Get the 1st controller
-        const controllerModelFactory = new XRControllerModelFactory();
-        const controller1 = renderer.xr.getController(0);
-        const model1 = controllerModelFactory.createControllerModel( controller1 );
-        controller1.add( model1 );
-        scene.add( controller1 );
+        //Setting up the guide lines
         const lineSegments=10;
         const lineGeometry = new THREE.BufferGeometry();
         const lineGeometryVertices = new Float32Array((lineSegments +1) * 3);
@@ -117,15 +113,41 @@ class VREnviroment{
         const guideline = new THREE.Line( lineGeometry, lineMaterial );
         const guideLight = new THREE.PointLight(0xffeeaa, 0, 2);
         guideLight.intensity = 1;
-        controller1.add(guideline);
-        controller1.addEventListener('selectstart', buttonResponse);
+
+        // Get the left controller
+        const controllerModelFactory = new XRControllerModelFactory();
+        const leftController = renderer.xr.getController(0);
+        const leftModel = controllerModelFactory.createControllerModel( leftController );
+        leftController.add( leftModel );
+        scene.add( leftController );
+        leftController.add(guideline);
+        leftController.addEventListener('select', leftTriggerButtonResponse);
+        leftController.addEventListener('squeeze', leftSqueezeButtonResponse);
+
+        // Get the right controller
+        const rightController = renderer.xr.getController(1);
+        const rightModel = controllerModelFactory.createControllerModel(rightController);
+        rightController.add( rightModel );
+        scene.add( rightController );
+        rightController.add(guideline);
+        rightController.addEventListener('select', rightTriggerButtonResponse);
+        rightController.addEventListener('squeeze', rightSqueezeButtonResponse);
     }
     
 };
-function buttonResponse() {
-        console.log("Pressed a button on ", this)
+function leftTriggerButtonResponse() {
+    sendMessage("trigger Button Pressed on left controller"); 
 }
-window.app = new VREnviroment();
+function leftSqueezeButtonResponse() {
+    sendMessage("squeeze Button Pressed on left controller"); 
+}
+function rightTriggerButtonResponse() {
+    sendMessage("trigger Button Pressed on right controller"); 
+}
+function rightSqueezeButtonResponse() {
+    sendMessage("squeeze Button Pressed on right controller"); 
+}
+//window.app = new VREnviroment();
 var vr = new VREnviroment();
 vr.setup();
 
