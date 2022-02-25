@@ -1,11 +1,14 @@
 import * as THREE from '../Open_Source_Code/three.js/build/three.module.js';
 import { VRButton } from '../Open_Source_Code/three.js/VRButton.js';
+import { XRControllerModelFactory } from '../Open_Source_Code/three.js/XRControllerModelFactory.js';
+//import WebXRPolyfill from './js/third-party/webxr-polyfill/build/webxr-polyfill.module.js';
 
 let camera, scene, renderer;
 
 class VREnviroment{
 
     setup(){
+
         const container = document.getElementById( 'container' );
 			container.addEventListener( 'click', function () {
 
@@ -63,14 +66,16 @@ class VREnviroment{
 		meshRight.layers.set( 2 ); // display in right eye only
 		scene.add( meshRight );
 
-        //
+        
 
         renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.xr.enabled = true;
 		renderer.xr.setReferenceSpaceType( 'local' );
-
+        //
+        this.setUpController();
+        //
         container.appendChild( renderer.domElement );
 
         const vrButton = document.getElementById( 'vrButton' );
@@ -95,7 +100,31 @@ class VREnviroment{
 
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
-}; 
+
+    setUpController() {
+        // Get the 1st controller
+        const controllerModelFactory = new XRControllerModelFactory();
+        const controller1 = renderer.xr.getController(0);
+        const model1 = controllerModelFactory.createControllerModel( controller1 );
+        controller1.add( model1 );
+        scene.add( controller1 );
+        const lineSegments=10;
+        const lineGeometry = new THREE.BufferGeometry();
+        const lineGeometryVertices = new Float32Array((lineSegments +1) * 3);
+        lineGeometryVertices.fill(0);
+        lineGeometry.setAttribute('position', new THREE.BufferAttribute(lineGeometryVertices, 3));
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x888888, blending: THREE.AdditiveBlending });
+        const guideline = new THREE.Line( lineGeometry, lineMaterial );
+        const guideLight = new THREE.PointLight(0xffeeaa, 0, 2);
+        guideLight.intensity = 1;
+        controller1.add(guideline);
+        controller1.addEventListener('selectstart', buttonResponse);
+    }
+    
+};
+function buttonResponse() {
+        console.log("Pressed a button on ", this)
+}
 window.app = new VREnviroment();
 var vr = new VREnviroment();
 vr.setup();
