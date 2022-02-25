@@ -1,5 +1,18 @@
 # Certificate creation README
 This is the readme for how the certificates were created for this 4th year project. This guide is taken from [here](https://github.com/nodejs/help/issues/253)
+
+The bash script ```certsBuilder.sh``` automatically does does this for you but below is a detalied explination for each step of the process
+
+to run the script use the command below
+
+The first argument is the destination folder
+the second argument is the CN of the server, for this example localhost is being used
+The third argument is the password being used
+```
+bash certsBuilder.sh . localhost 4YrDre4m
+```
+
+To change the -subj lines please refer to this [link](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=certificates-distinguished-names) on what arguments can be used
 ## Genertae the CA
 
 The first step is to create the CA invloves generatings a key
