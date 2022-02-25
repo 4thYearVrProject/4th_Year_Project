@@ -58,6 +58,10 @@ socket.on("candidate", (id, candidate) => {
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
 });
 
+socket.on("message", (message) => {
+  console.log(message);
+});
+
 /**
  * On closing the page, closes the all sockets
  */

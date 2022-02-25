@@ -68,3 +68,7 @@ function enableAudio() {
   console.log("Enabling audio");
   video.muted = false;
 }
+
+function sendMessage(message){
+  socket.emit("message",message);
+}

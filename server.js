@@ -36,5 +36,8 @@ io.sockets.on("connection", socket => {
   socket.on("disconnect", () => {
     socket.to(broadcaster).emit("disconnectPeer", socket.id);
   });
+  socket.on("message", (message) => {
+    socket.to(broadcaster).emit("message", message);
+  });
 });
 server.listen(port, () => console.log(`Server is running on port ${port}`));
