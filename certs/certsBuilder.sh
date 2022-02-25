@@ -50,6 +50,6 @@ openssl req -new -key $PATH_CLIENT/client.key -out $PATH_TMP/client.csr -passout
 
 openssl x509 -req -days 365 -passin pass:$PASSWORD -in $PATH_TMP/client.csr -CA $PATH_CA/ca.crt -CAkey $PATH_TMP/ca.key -set_serial 01 -out $PATH_CLIENT/client.crt
 
-openssl pkcs12 -export -out $PATH_CLIENT/client.pfx -inkey $PATH_CLIENT/client.key -in $PATH_CLIENT/client.crt
+openssl pkcs12 -export -out $PATH_CLIENT/client.pfx -passout pass:$PASSWORD -inkey $PATH_CLIENT/client.key -in $PATH_CLIENT/client.crt
 
 exit 0
