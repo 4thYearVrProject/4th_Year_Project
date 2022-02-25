@@ -7,8 +7,11 @@ const port = 4040;
 const https = require("https");
 const fs = require('fs');
 const options = {
-	key: fs.readFileSync('key.pem'),
-	cert: fs.readFileSync('cert.pem')
+	key: fs.readFileSync('certs/server/server.key'),
+	cert: fs.readFileSync('certs/server/server.crt'),
+  ca: fs.readFileSync('certs/ca/ca.crt'),
+  requestCert: true,
+  rejectUnauthorized: false
 };
 const server = https.createServer(options, app);
 
