@@ -83,10 +83,10 @@ class VREnviroment {
      */
     setUpController() {
         const controllerModelFactory = new XRControllerModelFactory();
-        let leftController = getController('left', controllerModelFactory);
-        let rightController = getController('right', controllerModelFactory);
+        let leftController = this.getController('left', controllerModelFactory);
+        let rightController = this.getController('right', controllerModelFactory);
 
-        let guideline = getGuideLine();
+        let guideline = this.getGuideLine();
         leftController.add(guideline);
         rightController.add(guideline);
     }
@@ -106,13 +106,14 @@ class VREnviroment {
 
         controller.addEventListener(
             'select',
-            window[side + 'TriggerButtonResponse']
+            side=='left'? leftTriggerButtonResponse:rightTriggerButtonResponse
         );
         controller.addEventListener(
             'squeeze',
-            window[side + 'SqueezeButtonResponse']
+            side=='left'? leftSqueezeButtonResponse:rightSqueezeButtonResponse
         );
         scene.add(controller);
+        return controller
     }
 
     /**
