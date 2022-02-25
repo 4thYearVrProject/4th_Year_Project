@@ -1,21 +1,27 @@
 // Selects HTML video player and the input selection dropdowns.
-const videoElement = document.querySelector("video");
-const audioSelect = document.querySelector("select#audioSource");
-const videoSelect = document.querySelector("select#videoSource");
+const videoElementLeft = document.getElementById("videoLeft")
+const videoElementRight = document.getElementById("videoRight")
+const videoSelectLeft = document.querySelector("select#videoSourceLeft");
+const videoSelectRight = document.querySelector("select#videoSourceRight");
 
-// Get camera and microphone
-getStream().then(getDevices).then(gotDevices);
+// Get left camera
+getStreamLeft().then(getDevices).then(gotDevices);
+
+// Get Right camera
+getStreamRight()
 
 // On input selection changes, reloads the stream
-audioSelect.onchange = getStream;
-videoSelect.onchange = getStream;
+videoSelectLeft.onchange = getStreamLeft;
+
+// On input selection changes, reloads the stream
+videoSelectRight.onchange = getStreamRight;
 
 /**
  * Gets the required media devices, then runs gotStream
  *
  * @return returns a promise of the stream
  */
-function getStream() {
+function getStreamLeft() {
   //Unloads previously used track sources
   if (window.stream) {
     window.stream.getTracks().forEach((track) => {
@@ -24,10 +30,8 @@ function getStream() {
   }
 
   // Sets the getUserMedia Constraints
-  const audioSource = audioSelect.value;
-  const videoSource = videoSelect.value;
+  const videoSource = videoSelectLeft.value;
   const constraints = {
-    audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
     video: { deviceId: videoSource ? { exact: videoSource } : undefined },
   };
 
@@ -35,7 +39,34 @@ function getStream() {
   // Then runs gotStream
   return navigator.mediaDevices
     .getUserMedia(constraints)
-    .then(gotStream)
+    .then(gotStreamLeft)
+    .catch(handleError);
+}
+
+/**
+ * Gets the required media devices, then runs gotStream
+ *
+ * @return returns a promise of the stream
+ */
+ function getStreamRight() {
+  //Unloads previously used track sources
+  if (window.stream) {
+    window.stream.getTracks().forEach((track) => {
+      track.stop();
+    });
+  }
+
+  // Sets the getUserMedia Constraints
+  const videoSource = videoSelectRight.value;
+  const constraints = {
+    video: { deviceId: videoSource ? { exact: videoSource } : undefined },
+  };
+
+  // Prompts the user for permission to use a media input
+  // Then runs gotStream
+  return navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then(gotStreamRight)
     .catch(handleError);
 }
 
@@ -44,17 +75,29 @@ function getStream() {
  *
  * @param stream the stream to be played onto the HTML
  */
-function gotStream(stream) {
-  videoElement.srcObject = stream;
+function gotStreamLeft(stream) {
+  videoElementLeft.srcObject = stream;
   window.stream = stream;
-  audioSelect.selectedIndex = [...audioSelect.options].findIndex(
-    (option) => option.text === stream.getAudioTracks()[0].label
-  );
-  videoSelect.selectedIndex = [...videoSelect.options].findIndex(
+  videoSelectLeft.selectedIndex = [...videoSelectLeft.options].findIndex(
     (option) => option.text === stream.getVideoTracks()[0].label
   );
-  socket.emit("broadcaster");
+  //socket.emit("broadcaster");
 }
+
+/**
+ * Sends the stream to the HTML
+ *
+ * @param stream the stream to be played onto the HTML
+ */
+ function gotStreamRight(stream) {
+   videoElementRight.srcObject = stream;
+   window.stream = stream;
+   videoSelectRight.selectedIndex = [...videoSelectRight.options].findIndex(
+     (option) => option.text === stream.getVideoTracks()[0].label
+   );
+   socket.emit("broadcaster");
+}
+
 
 /**
  * @return returns a promise of a list of input and output devices
@@ -64,22 +107,31 @@ function getDevices() {
 }
 
 /**
- * Populates the HTML selection dropdowns
+ * looks for the video devices from all devices 
  *
  * @param deviceInfos a list of devices
  */
 function gotDevices(deviceInfos) {
   window.deviceInfos = deviceInfos;
   for (const deviceInfo of deviceInfos) {
-    const option = document.createElement("option");
-    option.value = deviceInfo.deviceId;
-    if (deviceInfo.kind === "audioinput") {
-      option.text = deviceInfo.label || `Microphone ${audioSelect.length + 1}`;
-      audioSelect.appendChild(option);
-    } else if (deviceInfo.kind === "videoinput") {
-      option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
-      videoSelect.appendChild(option);
-    }
+    fillSelector(deviceInfo, videoSelectLeft);
+    fillSelector(deviceInfo, videoSelectRight);
+
+  }
+}
+
+/**
+ * Populates the HTML selection dropdowns
+ * 
+ * @param deviceInfo  the video device being added
+ * @param selector the videoselector that the option will be added too
+ */
+function fillSelector(deviceInfo, selector){
+  const option = document.createElement("option");
+  option.value = deviceInfo.deviceId;
+  if (deviceInfo.kind === "videoinput") {
+    option.text = deviceInfo.label || `Camera ${selector.length + 1}`;
+    selector.appendChild(option);
   }
 }
 

@@ -28,9 +28,15 @@ socket.on("watcher", (id) => {
   const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
 
-  // Connects the user to the media trackers
-  let stream = videoElement.srcObject;
-  stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
+  // Sends the tracks of the left camera stream
+  let streamLeft = videoElementLeft.srcObject;
+  streamLeft.name = 'left';
+  streamLeft.getTracks().forEach((track) => peerConnection.addTrack(track, streamLeft));
+  // Sends the tracks of the right camera stream
+  let streamRight = videoElementRight.srcObject;
+  streamRight.id = 'right';
+  streamRight.getTracks().forEach((track) => peerConnection.addTrack(track, streamRight));
+ 
 
   // Selects the ICE canidate for the RTC connection
   peerConnection.onicecandidate = (event) => {
