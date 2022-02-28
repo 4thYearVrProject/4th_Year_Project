@@ -49,6 +49,7 @@ class VREnviroment {
         renderer.xr.setReferenceSpaceType('local');
 
         this.setUpController();
+        this.addCameraPosition();
 
         container.appendChild(renderer.domElement);
 
@@ -84,7 +85,10 @@ class VREnviroment {
     setUpController() {
         const controllerModelFactory = new XRControllerModelFactory();
         let leftController = this.getController('left', controllerModelFactory);
-        let rightController = this.getController('right', controllerModelFactory);
+        let rightController = this.getController(
+            'right',
+            controllerModelFactory
+        );
 
         let guideline = this.getGuideLine();
         leftController.add(guideline);
@@ -106,14 +110,18 @@ class VREnviroment {
 
         controller.addEventListener(
             'select',
-            side=='left'? leftTriggerButtonResponse:rightTriggerButtonResponse
+            side == 'left'
+                ? leftTriggerButtonResponse
+                : rightTriggerButtonResponse
         );
         controller.addEventListener(
             'squeeze',
-            side=='left'? leftSqueezeButtonResponse:rightSqueezeButtonResponse
+            side == 'left'
+                ? leftSqueezeButtonResponse
+                : rightSqueezeButtonResponse
         );
         scene.add(controller);
-        return controller
+        return controller;
     }
 
     /**
@@ -157,6 +165,23 @@ class VREnviroment {
         guideLight.intensity = 1;
 
         return guideLight;
+    }
+
+    /**
+     * Adds an arrow to the view that displays the camera position
+     */
+    addCameraPosition() {
+        const dir = new THREE.Vector3(1, 1, 0);
+
+        //normalize the direction vector (convert to vector of length 1)
+        dir.normalize();
+
+        const origin = new THREE.Vector3(0, 0, 0);
+        const length = 1;
+        const hex = 0x1aa7ec;
+
+        const arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
+        scene.add(arrowHelper);
     }
 
     /**
