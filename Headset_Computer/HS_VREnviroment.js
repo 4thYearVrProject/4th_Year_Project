@@ -36,7 +36,10 @@ class VREnviroment {
         // Gets video from the html, and converts it to a mesh
         const video = document.getElementById('Video');
         video.play();
-        const texture = new THREE.VideoTexture(video);
+        const texture = new THREE.VideoTexture(
+            video, 
+            THREE.EquirectangularReflectionMapping,
+            THREE.RepeatWrapping);
 
         // Creates a mesh of the video, and adds them to the scene
         this.createMesh('left', texture);
@@ -167,18 +170,21 @@ class VREnviroment {
      */
     createMesh(side, texture) {
         // radius, widthSegments, heightSegments
-        const geometry = new THREE.SphereGeometry(200, 60, 40);
+        //const geometry = new THREE.SphereGeometry(500, 60, 40);
+        const geometry = new THREE.CylinderGeometry( 10, 10, 18, 32 );
         const material = new THREE.MeshBasicMaterial({ map: texture });
+        const capMaterial = new THREE.MeshBasicMaterial({ color: '0x000000' });
 
         // invert the geometry on the x-axis so that all of the faces point inward
         geometry.scale(-1, 1, 1);
 
         const uvs = geometry.getAttribute('uv').array;
+        
         for (let i = 0; i < uvs.length; i += 2) {
-            uvs[i] = side == 'left' ? uvs[i] * 0.5 : uvs[i] * 0.5; // + 0.5;
+            uvs[i] = side == 'left' ? uvs[i] * 2.5 : uvs[i] * 2.5; // + 0.5;
         }
-
-        const mesh = new THREE.Mesh(geometry, material);
+        
+        const mesh = new THREE.Mesh(geometry, [material, capMaterial, capMaterial]);
         mesh.rotation.y = -Math.PI / 2;
 
         // Layers 0 & 1 are rendered for left eye
