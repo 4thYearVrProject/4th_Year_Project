@@ -3,7 +3,7 @@ import { VRButton } from '../Open_Source_Code/three.js/VRButton.js';
 import { XRControllerModelFactory } from '../Open_Source_Code/three.js/XRControllerModelFactory.js';
 import '../Headset_Computer/HS_Connection.js';
 
-let renderer, camera, scene;
+let renderer, camera, scene, self;
 
 /**
  * The VR Environment is used to render the video from the html streams
@@ -18,6 +18,7 @@ class VREnviroment {
      * @return {VREnviroment}  Returns a VREnvironment
      */
     constructor() {
+        self = this;
         const container = document.getElementById('container');
         container.addEventListener('click', function () {
             video.play();
@@ -49,6 +50,7 @@ class VREnviroment {
         renderer.xr.setReferenceSpaceType('local');
 
         this.setUpController();
+        this.addCameraPosition();
 
         container.appendChild(renderer.domElement);
 
@@ -64,6 +66,7 @@ class VREnviroment {
      * Renders the scene, is done every frame
      */
     update() {
+        self.addCameraPosition();
         renderer.render(scene, camera);
     }
 
@@ -84,7 +87,10 @@ class VREnviroment {
     setUpController() {
         const controllerModelFactory = new XRControllerModelFactory();
         let leftController = this.getController('left', controllerModelFactory);
-        let rightController = this.getController('right', controllerModelFactory);
+        let rightController = this.getController(
+            'right',
+            controllerModelFactory
+        );
 
         let guideline = this.getGuideLine();
         leftController.add(guideline);
@@ -106,14 +112,18 @@ class VREnviroment {
 
         controller.addEventListener(
             'select',
-            side=='left'? leftTriggerButtonResponse:rightTriggerButtonResponse
+            side == 'left'
+                ? leftTriggerButtonResponse
+                : rightTriggerButtonResponse
         );
         controller.addEventListener(
             'squeeze',
-            side=='left'? leftSqueezeButtonResponse:rightSqueezeButtonResponse
+            side == 'left'
+                ? leftSqueezeButtonResponse
+                : rightSqueezeButtonResponse
         );
         scene.add(controller);
-        return controller
+        return controller;
     }
 
     /**
@@ -157,6 +167,27 @@ class VREnviroment {
         guideLight.intensity = 1;
 
         return guideLight;
+    }
+
+    /**
+     * Adds an arrow to the view that displays the camera position
+     */
+    addCameraPosition() {
+        scene.remove(this.arrowHelper);
+
+        const dir = new THREE.Vector3(-1, 0, 0);
+
+        //normalize the direction vector (convert to vector of length 1)
+        dir.normalize();
+        let origin = camera.position.clone();
+        origin.y = 0;
+
+        const length = 0.8;
+        const hex = 0x1aa7ec;
+
+        this.arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex, 0.2, 0.1);
+        this.arrowHelper.line.material.linewidth = 3;
+        scene.add(this.arrowHelper);
     }
 
     /**
