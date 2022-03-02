@@ -114,20 +114,26 @@ class VREnviroment {
     }
 
     createMesh(side, texture) {
-        const geometry = new THREE.SphereGeometry(200, 60, 40);
+        // radius, widthSegments, heightSegments
+        //const geometry = new THREE.SphereGeometry(500, 60, 40);
+        const geometry = new THREE.CylinderGeometry( 10, 10, 18, 32 );
         const material = new THREE.MeshBasicMaterial({ map: texture });
+        const capMaterial = new THREE.MeshBasicMaterial({ color: '0x000000' });
 
         // invert the geometry on the x-axis so that all of the faces point inward
         geometry.scale(-1, 1, 1);
 
         const uvs = geometry.getAttribute('uv').array;
-
+        
         for (let i = 0; i < uvs.length; i += 2) {
-            uvs[i] = side == 'left' ? uvs[i] * 2.5 : uvs[i] * 2.5;// + 0.5;
+            uvs[i] = side == 'left' ? uvs[i] * 2.5 : uvs[i] * 2.5; // + 0.5;
         }
-
-        const mesh = new THREE.Mesh(geometry, material);
+        
+        const mesh = new THREE.Mesh(geometry, [material, capMaterial, capMaterial]);
         mesh.rotation.y = -Math.PI / 2;
+
+        // Layers 0 & 1 are rendered for left eye
+        // Layers 0 & 2 are rendered for right eye
         let layer = side == 'left' ? 1 : 2;
         mesh.layers.set(layer);
         scene.add(mesh);
