@@ -56,7 +56,8 @@ class VREnviroment {
     }
 
     update() {
-        self.addGuideLines();
+        self.addGuideLines(leftController);
+        self.addGuideLines(rightController);
         renderer.render(scene, camera);
     }
 
@@ -92,30 +93,19 @@ class VREnviroment {
         rightController.addEventListener('select', rightTriggerButtonResponse);
         rightController.addEventListener('squeeze', rightSqueezeButtonResponse);
 
-        //Setting up the guide lines
-        const lineSegments=10;
-        const lineGeometryVertices = new Float32Array((lineSegments +1) * 3);
-        const lineGeometry = new THREE.BufferGeometry();
-        lineGeometryVertices.fill(0);
-        const lineGeometryColors = new Float32Array((lineSegments +1) * 3);
-        lineGeometryColors.fill(0.5);
-        lineGeometry.setAttribute('position', new THREE.BufferAttribute(lineGeometryVertices, 3));
-        lineGeometry.setAttribute('color', new THREE.BufferAttribute(lineGeometryColors, 3));
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x888888, blending: THREE.AdditiveBlending });
-        const guideline = new THREE.Line( lineGeometry, lineMaterial );
-        const guideLight = new THREE.PointLight(0xffffff, 0, 2);
-        guideLight.intensity = 1;
-        rightController.add(guideline);
-        leftController.add(guideline);
         scene.add(rightController);
         scene.add(leftController);
         
     }
 
-    addGuideLines(){
-        scene.remove(this.leftLine);
-        scene.remove(this.rightLine);
-        
+    addGuideLines(controller){
+        const pointerGeometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, 0, -1),
+          ]);
+          const line = new THREE.Line(pointerGeometry);
+          line.scale.z = 5;
+          controller.add(line);
     }
 
     createMesh(side, texture) {
