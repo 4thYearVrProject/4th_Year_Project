@@ -3,7 +3,7 @@ import { VRButton } from '../Open_Source_Code/three.js/VRButton.js';
 import { XRControllerModelFactory } from '../Open_Source_Code/three.js/XRControllerModelFactory.js';
 import '../Headset_Computer/HS_Connection.js';
 
-let renderer, camera, scene, self;
+let renderer, camera, scene, self, leftController, rightController;
 
 /**
  * The VR Environment is used to render the video from the html streams
@@ -66,6 +66,8 @@ class VREnviroment {
      * Renders the scene, is done every frame
      */
     update() {
+        self.addGuideLines(leftController);
+        self.addGuideLines(rightController);
         self.addCameraPosition();
         renderer.render(scene, camera);
     }
@@ -86,15 +88,11 @@ class VREnviroment {
      */
     setUpController() {
         const controllerModelFactory = new XRControllerModelFactory();
-        let leftController = this.getController('left', controllerModelFactory);
-        let rightController = this.getController(
+        leftController = this.getController('left', controllerModelFactory);
+        rightController = this.getController(
             'right',
             controllerModelFactory
         );
-
-        let guideline = this.getGuideLine();
-        leftController.add(guideline);
-        rightController.add(guideline);
     }
 
     /**
@@ -127,49 +125,6 @@ class VREnviroment {
     }
 
     /**
-     * Gets a guideline for displaying on the end of the controller
-     * Used for pointing at specific locations with a controller
-     *
-     * @return {Line}  a THREE.Line that can be attached to a controller
-     */
-    getGuideLine() {
-        const lineSegments = 10;
-        const lineGeometryVertices = new Float32Array((lineSegments + 1) * 3);
-        const lineGeometry = new THREE.BufferGeometry();
-        lineGeometryVertices.fill(0);
-        const lineGeometryColors = new Float32Array((lineSegments + 1) * 3);
-        lineGeometryColors.fill(0.5);
-        lineGeometry.setAttribute(
-            'position',
-            new THREE.BufferAttribute(lineGeometryVertices, 3)
-        );
-        lineGeometry.setAttribute(
-            'color',
-            new THREE.BufferAttribute(lineGeometryColors, 3)
-        );
-        const lineMaterial = new THREE.LineBasicMaterial({
-            color: 0x888888,
-            blending: THREE.AdditiveBlending,
-        });
-        const guideline = new THREE.Line(lineGeometry, lineMaterial);
-
-        return guideline;
-    }
-
-    /**
-     * Gets a point light that is used to display the
-     * location the guidlines meet terrain
-     *
-     * @return {PointLight}  a THREE.PointLight that highlights a point
-     */
-    getGuideLight() {
-        const guideLight = new THREE.PointLight(0xffffff, 0, 2);
-        guideLight.intensity = 1;
-
-        return guideLight;
-    }
-
-    /**
      * Adds an arrow to the view that displays the camera position
      */
     addCameraPosition() {
@@ -188,6 +143,20 @@ class VREnviroment {
         this.arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex, 0.2, 0.1);
         this.arrowHelper.line.material.linewidth = 3;
         scene.add(this.arrowHelper);
+    }
+  
+    /**
+     * adds a line to the controller showing where it is pointing
+     * @param {*} controller 
+     */
+    addGuideLines(controller){
+        const pointerGeometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, 0, -1),
+          ]);
+          const line = new THREE.Line(pointerGeometry);
+          line.scale.z = 5;
+          controller.add(line);
     }
 
     /**
