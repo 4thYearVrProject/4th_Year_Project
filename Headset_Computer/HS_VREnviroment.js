@@ -115,8 +115,8 @@ class VREnviroment {
 
     createMesh(side, texture) {
         // radius, widthSegments, heightSegments
-        //const geometry = new THREE.SphereGeometry(500, 60, 40);
-        const geometry = new THREE.CylinderGeometry( 10, 10, 18, 32 );
+        const geometry = new THREE.SphereGeometry(500, 60, 40);
+        //const geometry = new THREE.CylinderGeometry( 10, 10, 18, 32 );
         const material = new THREE.MeshBasicMaterial({ map: texture });
         const capMaterial = new THREE.MeshBasicMaterial({ color: '0x000000' });
 
