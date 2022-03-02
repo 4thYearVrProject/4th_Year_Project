@@ -3,10 +3,11 @@ import { VRButton } from '../Open_Source_Code/three.js/VRButton.js';
 import { XRControllerModelFactory } from '../Open_Source_Code/three.js/XRControllerModelFactory.js';
 import '../Headset_Computer/HS_Connection.js';
 //import WebXRPolyfill from './js/third-party/webxr-polyfill/build/webxr-polyfill.module.js';
-let renderer, camera, scene;
+let renderer, camera, scene, self, leftController, rightController;
 
 class VREnviroment {
     constructor() {
+        self = this;
         const container = document.getElementById('container');
         container.addEventListener('click', function () {
             video.play();
@@ -55,6 +56,7 @@ class VREnviroment {
     }
 
     update() {
+        self.addGuideLines();
         renderer.render(scene, camera);
     }
 
@@ -69,7 +71,7 @@ class VREnviroment {
 
         // Get the left controller
         const controllerModelFactory = new XRControllerModelFactory();
-        const leftController = renderer.xr.getController(0);
+        leftController = renderer.xr.getController(0);
         const leftModel = controllerModelFactory.createControllerModel(
             leftController
         );
@@ -80,7 +82,7 @@ class VREnviroment {
         leftController.addEventListener('squeeze', leftSqueezeButtonResponse);
 
         // Get the right controller
-        const rightController = renderer.xr.getController(1);
+        rightController = renderer.xr.getController(1);
         const rightModel = controllerModelFactory.createControllerModel(
             rightController
         );
@@ -107,6 +109,13 @@ class VREnviroment {
         leftController.add(guideline);
         scene.add(rightController);
         scene.add(leftController);
+        
+    }
+
+    addGuideLines(){
+        scene.remove(this.leftLine);
+        scene.remove(this.rightLine);
+        
     }
 
     createMesh(side, texture) {
