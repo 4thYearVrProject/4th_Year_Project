@@ -15,6 +15,7 @@ const config = {
 
 const socket = io.connect(window.location.origin);
 const video = document.querySelector("video");
+const socketPy = io.connect('http://' + window.location.hostname + ':4444');
 
 // Creates the peer side connection after receiving "offer" signal
 socket.on("offer", (id, description) => {
@@ -69,6 +70,8 @@ function enableAudio() {
   video.muted = false;
 }
 
-function sendMessage(message){
-  socket.emit("message",message);
+function sendCommand(command) {
+    const data = JSON.stringify(command);
+    socket.emit('command', data);
+    socketPy.emit('command', data);
 }
