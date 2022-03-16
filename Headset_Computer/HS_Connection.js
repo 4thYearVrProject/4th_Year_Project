@@ -17,6 +17,9 @@ const socket = io.connect(window.location.origin);
 const video = document.querySelector("video");
 const socketPy = io.connect('http://' + window.location.hostname + ':4444');
 
+const testCommandButton = document.getElementById('testCommand');
+testCommandButton.addEventListener("click", testCommand);
+
 // Creates the peer side connection after receiving "offer" signal
 socket.on("offer", (id, description) => {
   peerConnection = new RTCPeerConnection(config);
@@ -71,7 +74,18 @@ function enableAudio() {
 }
 
 function sendCommand(command) {
+    console.log("sending command: ", command)
     const data = JSON.stringify(command);
     socket.emit('command', data);
     socketPy.emit('command', data);
+}
+
+function testCommand() {
+    const command = {
+        command: {
+            direction: 'forwards',
+            distance: 10,
+        },
+    };
+    sendCommand(command)
 }

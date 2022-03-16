@@ -60,7 +60,7 @@ socket.on("candidate", (id, candidate) => {
 
 socket.on('command', (data) => {
     const command = JSON.parse(data);
-    console.log(command);
+    console.log("receive command: ", command)
 });
 
 /**
