@@ -27,7 +27,7 @@ Server is running on port 4040
 ```
 
 4. Begin hosting the stream by going to:
-   > http://localhost:4040/Camera_Computer/Stream.html
+    > https://localhost:4040/Camera_Computer/Stream.html
 
 On this page the video and audio sources can be selected.
 
@@ -39,6 +39,6 @@ On this page the video and audio sources can be selected.
 
 2. The viewing computer can then connect to the stream by connecting to the url below, after replacing the IP address with the IP address from LogMeIn Hamachi.
 
-   > http://(Host IP Address):4040/Headset_Computer/View.html
+    > https://(Host IP Address):4040/Headset_Computer/View.html
 
 3. The viewing can be terminated by closing the browser window.
