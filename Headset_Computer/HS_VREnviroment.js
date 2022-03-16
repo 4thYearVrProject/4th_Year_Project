@@ -144,10 +144,10 @@ class VREnviroment {
         this.arrowHelper.line.material.linewidth = 3;
         scene.add(this.arrowHelper);
     }
-  
+
     /**
      * adds a line to the controller showing where it is pointing
-     * @param {*} controller 
+     * @param {*} controller
      */
     addGuideLines(controller){
         const pointerGeometry = new THREE.BufferGeometry().setFromPoints([
@@ -214,7 +214,7 @@ function rightTriggerButtonResponse() {
     const command = {
         command: {
             direction: 'forwards',
-            distance: 0.1,
+            distance: 10,
         },
     };
     sendCommand(command);
@@ -223,7 +223,7 @@ function rightSqueezeButtonResponse() {
     const command = {
         command: {
             direction: 'forwards',
-            distance: 0.1,
+            distance: 10,
         },
     };
     sendCommand(command);
