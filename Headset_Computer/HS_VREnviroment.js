@@ -193,16 +193,40 @@ class VREnviroment {
  *  Functions send messages over socket to camera computer
  */
 function leftTriggerButtonResponse() {
-    sendMessage('trigger Button Pressed on left controller');
+    const command = {
+        command: {
+            direction: 'left',
+            distance: 90,
+        },
+    };
+    sendCommand(command);
 }
 function leftSqueezeButtonResponse() {
-    sendMessage('squeeze Button Pressed on left controller');
+    const command = {
+        command: {
+            direction: 'right',
+            distance: 90,
+        },
+    };
+    sendCommand(command);
 }
 function rightTriggerButtonResponse() {
-    sendMessage('trigger Button Pressed on right controller');
+    const command = {
+        command: {
+            direction: 'forwards',
+            distance: 0.1,
+        },
+    };
+    sendCommand(command);
 }
 function rightSqueezeButtonResponse() {
-    sendMessage('squeeze Button Pressed on right controller');
+    const command = {
+        command: {
+            direction: 'forwards',
+            distance: 0.1,
+        },
+    };
+    sendCommand(command);
 }
 
 // Runs the VREnvirnment
