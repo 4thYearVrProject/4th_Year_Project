@@ -39,5 +39,8 @@ io.sockets.on("connection", socket => {
   socket.on("message", (message) => {
     socket.to(broadcaster).emit("message", message);
   });
+  socket.on("command", (command) => {
+    socket.to(broadcaster).emit("command", command);
+  });
 });
 server.listen(port, () => console.log(`Server is running on port ${port}`));
