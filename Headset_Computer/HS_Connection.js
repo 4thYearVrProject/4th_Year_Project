@@ -17,8 +17,7 @@ const socket = io.connect(window.location.origin);
 const video = document.querySelector("video");
 const socketPy = io.connect('http://' + window.location.hostname + ':4444');
 
-const testCommandButton = document.getElementById('testCommand');
-testCommandButton.addEventListener("click", testCommand);
+document.getElementById('testCommand').addEventListener("click", testCommand);
 
 // Creates the peer side connection after receiving "offer" signal
 socket.on("offer", (id, description) => {
