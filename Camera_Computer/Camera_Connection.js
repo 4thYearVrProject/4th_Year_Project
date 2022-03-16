@@ -58,9 +58,8 @@ socket.on("candidate", (id, candidate) => {
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
 });
 
-socket.on('command', (data) => {
-    const command = JSON.parse(data);
-    console.log("receive command: ", command)
+socket.on("command", (command) => {
+    console.log("received command: ", command)
 });
 
 /**
