@@ -75,9 +75,8 @@ function enableAudio() {
 
 function sendCommand(command) {
     console.log("sending command: ", command)
-    const data = JSON.stringify(command);
-    socket.emit('command', data);
-    socketPy.emit('command', data);
+    socket.emit('command', command);
+    socketPy.emit('command', command);
 }
 
 function testCommand() {
