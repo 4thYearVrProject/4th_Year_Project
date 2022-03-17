@@ -3,7 +3,9 @@
   <head>
     <title>Viewer</title>
     <meta charset="UTF-8" />
-	<link rel="stylesheet" href="/css/styles.css">
+	  <link rel="stylesheet" href="/css/styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="HS_Connection.js"></script>
 
   </head>
   <body>
@@ -15,13 +17,11 @@
 
 		<div id="vrButton"></div>
 
-        <button id="testCommand">
+        <button id="testCommand" onclick =testCommand()>
             Test Command
         </button>
 	</div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="HS_Connection.js"></script>
 
 	<!-- Starting an immersive WebXR session requires user interaction. Start the WebXR experience with a simple button. -->
 	<script type="module" src="HS_VREnviroment.js"></script>
