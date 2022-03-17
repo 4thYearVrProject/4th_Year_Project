@@ -18,6 +18,7 @@ const video = document.querySelector("video");
 const socketPy = io.connect('http://' + window.location.hostname + ':4444');
 
 document.getElementById('testCommand').addEventListener("click", testCommand);
+// document.getElementById('testCommand').addEventListener("mouseup", testCommand);
 
 // Creates the peer side connection after receiving "offer" signal
 socket.on("offer", (id, description) => {
@@ -71,13 +72,13 @@ function enableAudio() {
   console.log("Enabling audio");
   video.muted = false;
 }
-
+var count = 0;
 function sendCommand(command) {
     console.log("sending command: ", command)
     socket.emit('command', command);
-    socketPy.emit('command', command);
+    //socketPy.emit('command', command);
 }
-
+// var count = 0;
 function testCommand() {
     const command = {
         command: {
@@ -85,5 +86,6 @@ function testCommand() {
             distance: 10,
         },
     };
+    // sendCommand(command)
     sendCommand(command)
 }

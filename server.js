@@ -3,6 +3,12 @@ const app = express();
 
 let broadcaster;
 const port = 4040;
+const udpPort = 4444;
+const host = '127.0.0.1';
+const dgram = require('dgram');
+
+var client = dgram.createSocket('udp4');
+
 
 const https = require("https");
 const fs = require('fs');
@@ -41,6 +47,15 @@ io.sockets.on("connection", socket => {
   });
   socket.on("command", (command) => {
     socket.to(broadcaster).emit("command", command);
+    // var message = new Buffer('I am Thor!');
+    console.log("received command: ", command)
+    //send to udp port 4444
+    var message = new Buffer(JSON.stringify(command));
+    client.send(message, 0, message.length, udpPort, host, function(err, bytes) {
+
+      if (err) throw err;
+      console.log('UDP client message sent to ' + host +':'+ udpPort);
+    });
   });
 });
 server.listen(port, () => console.log(`Server is running on port ${port}`));
