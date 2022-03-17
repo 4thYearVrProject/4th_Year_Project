@@ -14,7 +14,8 @@ const config = {
 };
 
 const socket = io.connect(window.location.origin);
-const video = document.querySelector("video");
+const videoLeft = document.getElementById("VideoLeft");
+const videoRight = document.getElementById("VideoRight");
 
 // Creates the peer side connection after receiving "offer" signal
 socket.on("offer", (id, description) => {
@@ -27,7 +28,12 @@ socket.on("offer", (id, description) => {
       socket.emit("answer", id, peerConnection.localDescription);
     });
   peerConnection.ontrack = (event) => {
-    video.srcObject = event.streams[0];
+    if(event.transceiver.mid == 0){
+      videoLeft.srcObject = event.streams[0];
+    }
+    else{
+      videoRight.srcObject = event.streams[0];
+    }
   };
   peerConnection.onicecandidate = (event) => {
     if (event.candidate) {
@@ -66,7 +72,7 @@ window.onunload = window.onbeforeunload = () => {
  */
 function enableAudio() {
   console.log("Enabling audio");
-  video.muted = false;
+  videoLeft.muted = false;
 }
 
 function sendMessage(message){

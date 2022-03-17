@@ -21,7 +21,7 @@ class VREnviroment {
         self = this;
         const container = document.getElementById('container');
         container.addEventListener('click', function () {
-            video.play();
+            videoLeft.play();
         });
 
         camera = new THREE.PerspectiveCamera(
@@ -35,13 +35,18 @@ class VREnviroment {
         scene = new THREE.Scene();
 
         // Gets video from the html, and converts it to a mesh
-        const video = document.getElementById('Video');
-        video.play();
-        const texture = new THREE.VideoTexture(video);
+
+        const videoLeft = document.getElementById('VideoLeft');
+        videoLeft.play();
+        const textureLeft = new THREE.VideoTexture(videoLeft);
+
+        const videoRight = document.getElementById('VideoRight');
+        videoRight.play();
+        const textureRight = new THREE.VideoTexture(videoRight);
 
         // Creates a mesh of the video, and adds them to the scene
-        this.createMesh('left', texture);
-        this.createMesh('right', texture);
+        this.createMesh('left', textureLeft);
+        this.createMesh('right', textureRight);
 
         renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -167,17 +172,22 @@ class VREnviroment {
      */
     createMesh(side, texture) {
         // radius, widthSegments, heightSegments
-        const geometry = new THREE.SphereGeometry(200, 60, 40);
+
+        const geometry = new THREE.SphereGeometry(500, 60, 40);
+        //const geometry = new THREE.CylinderGeometry( 10, 10, 18, 32 );
         const material = new THREE.MeshBasicMaterial({ map: texture });
+        //const capMaterial = new THREE.MeshBasicMaterial({ color: '0x000000' });
 
         // invert the geometry on the x-axis so that all of the faces point inward
         geometry.scale(-1, 1, 1);
 
         const uvs = geometry.getAttribute('uv').array;
-        for (let i = 0; i < uvs.length; i += 2) {
-            uvs[i] = side == 'left' ? uvs[i] * 0.5 : uvs[i] * 0.5; // + 0.5;
-        }
 
+        
+        for (let i = 0; i < uvs.length; i += 2) {
+            uvs[i] = side == 'left' ? uvs[i] * 2.5 : uvs[i] * 2.5; // + 0.5;
+        }
+        
         const mesh = new THREE.Mesh(geometry, material);
         mesh.rotation.y = -Math.PI / 2;
 
