@@ -14,8 +14,11 @@ const config = {
 };
 
 const socket = io.connect(window.location.origin);
+const socketPy = io.connect('http://' + window.location.hostname + ':4444');
+
 const videoLeft = document.getElementById("VideoLeft");
 const videoRight = document.getElementById("VideoRight");
+
 
 // Creates the peer side connection after receiving "offer" signal
 socket.on("offer", (id, description) => {
@@ -74,7 +77,20 @@ function enableAudio() {
   console.log("Enabling audio");
   videoLeft.muted = false;
 }
-
-function sendMessage(message){
-  socket.emit("message",message);
+var count = 0;
+function sendCommand(command) {
+    console.log("sending command: ", command)
+    socket.emit('command', command);
+    //socketPy.emit('command', command);
+}
+// var count = 0;
+function testCommand() {
+    const command = {
+        command: {
+            direction: 'forwards',
+            distance: 10,
+        },
+    };
+    // sendCommand(command)
+    sendCommand(command)
 }

@@ -63,9 +63,39 @@ socket.on("candidate", (id, candidate) => {
   updateConnection(peerConnections[id], numberOfWatchers);
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
 });
+//ifioks test
+// var PORT = 4444;
 
-socket.on("message", (message) => {
-  console.log(message);
+// var HOST = '127.0.0.1';
+
+ 
+
+// var dgram = require('dgram');
+
+// var message = new Buffer('I am Thor!');
+
+// var client = dgram.createSocket('udp4');
+
+// client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+
+//     if (err) throw err;
+
+//     console.log('UDP client message sent to ' + HOST +':'+ PORT);
+
+   
+
+// });
+
+//
+socket.on("command", (command) => {
+    console.log("received command: ", command)
+    //ifiok added this
+  //   client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
+
+  //     if (err) throw err;
+  
+  //     console.log('UDP client message sent to ' + HOST +':'+ PORT);
+  // });
 });
 
 /**
