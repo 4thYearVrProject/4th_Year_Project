@@ -6,18 +6,22 @@
     <link rel="stylesheet" href="/css/styles.css">
   </head>
   <body>
+
     <section class="select">
-      <label for="audioSource">Audio source: </label>
-      <select id="audioSource"></select>
+      <label for="videoSourceLeft">Video source left: </label>
+      <select id="videoSourceLeft"></select>
     </section>
 
     <section class="select">
-      <label for="videoSource">Video source: </label>
-      <select id="videoSource"></select>
+      <label for="videoSourceRight">Video source right: </label>
+      <select id="videoSourceRight"></select>
     </section>
 
-	  <div id="player">
-	  	<video autoplay muted></video>
+	  <div class="playerLeft">
+	  	<video id="videoLeft" autoplay muted></video>
+	  </div>
+    <div class="playerRight">
+	  	<video id="videoRight"  autoplay muted></video>
 	  </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="Camera_Start.js"></script>
