@@ -206,7 +206,7 @@ function leftTriggerButtonResponse() {
     const command = {
         command: {
             direction: 'left',
-            distance: 90,
+            distance: 45,
         },
     };
     sendCommand(command);
@@ -215,7 +215,7 @@ function leftSqueezeButtonResponse() {
     const command = {
         command: {
             direction: 'right',
-            distance: 90,
+            distance: 45,
         },
     };
     sendCommand(command);
@@ -224,7 +224,7 @@ function rightTriggerButtonResponse() {
     const command = {
         command: {
             direction: 'forwards',
-            distance: 10,
+            distance: 20,
         },
     };
     sendCommand(command);
@@ -232,7 +232,7 @@ function rightTriggerButtonResponse() {
 function rightSqueezeButtonResponse() {
     const command = {
         command: {
-            direction: 'forwards',
+            direction: 'backwards',
             distance: 10,
         },
     };
