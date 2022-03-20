@@ -113,18 +113,15 @@ class VREnviroment {
         const model = controllerModelFactory.createControllerModel(controller);
         controller.add(model);
 
-        controller.addEventListener(
-            'select',
-            side == 'left'
-                ? leftTriggerButtonResponse
-                : rightTriggerButtonResponse
-        );
-        controller.addEventListener(
-            'squeeze',
-            side == 'left'
-                ? leftSqueezeButtonResponse
-                : rightSqueezeButtonResponse
-        );
+        if (side == 'left'){
+            controller.addEventListener('select', leftTriggerButtonResponse)
+            controller.addEventListener('squeeze', leftSqueezeButtonResponse)
+        }else{
+            controller.addEventListener('selectstart', rightTriggerDownButtonResponse)
+            controller.addEventListener('selectend', rightTriggerReleaseButtonResponse)
+            controller.addEventListener('squeeze', rightSqueezeButtonResponse)
+        }
+
         scene.add(controller);
         return controller;
     }
@@ -220,11 +217,20 @@ function leftSqueezeButtonResponse() {
     };
     sendCommand(command);
 }
-function rightTriggerButtonResponse() {
+function rightTriggerDownButtonResponse() {
     const command = {
         command: {
             direction: 'forwards',
-            distance: 20,
+            distance: 0,
+        },
+    };
+    sendCommand(command);
+}
+function rightTriggerReleaseButtonResponse() {
+    const command = {
+        command: {
+            direction: 'stop',
+            distance: 0,
         },
     };
     sendCommand(command);
