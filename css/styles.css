@@ -17,13 +17,15 @@ label, #numOfWatchers {
 h3, p { display:inline }
 
 #wrapper { 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
   width: 920px; 
   height: auto; 
   margin: 0 auto;
 } 
 #Video { 
-  width: 47.5%; 
-  height: 300px; 
+  width: 20%; 
   float: left; 
   margin-right: 5%;
 } 

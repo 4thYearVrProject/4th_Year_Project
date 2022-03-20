@@ -83,14 +83,4 @@ function sendCommand(command) {
     socket.emit('command', command);
     //socketPy.emit('command', command);
 }
-// var count = 0;
-function testCommand() {
-    const command = {
-        command: {
-            direction: 'forwards',
-            distance: 10,
-        },
-    };
-    // sendCommand(command)
-    sendCommand(command)
-}
+

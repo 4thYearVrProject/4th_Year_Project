@@ -1,5 +1,4 @@
 const peerConnections = {};
-let numberOfWatchers = 0;
 // The RTC configuration settings
 const config = {
   iceServers: [
@@ -22,8 +21,6 @@ socket.on("answer", (id, description) => {
 
 // connects a user to the stream
 socket.on("watcher", (id) => {
-  numberOfWatchers += 1;
-
   // Creates a new RTC connection to the user
   const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
@@ -47,7 +44,7 @@ socket.on("watcher", (id) => {
 
   // Sets a listener for when the peer changes connection
   peerConnection.addEventListener("connectionstatechange", (event) => {
-    updateConnection(peerConnections[id], numberOfWatchers);
+    updateConnection(peerConnections[id]);
   });
 
   // Sends the "offer" signal to the peer
@@ -60,7 +57,7 @@ socket.on("watcher", (id) => {
 });
 
 socket.on("candidate", (id, candidate) => {
-  updateConnection(peerConnections[id], numberOfWatchers);
+  updateConnection(peerConnections[id]);
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
 });
 //ifioks test
@@ -109,11 +106,8 @@ window.onunload = window.onbeforeunload = () => {
  * Updates the HTML page based on the connection status of given peer
  *
  * @param connection A peer conncection
- * @param numberOfWatchers The number of users connected to the stream
  */
-function updateConnection(connection, numberOfWatchers) {
-  document.getElementById("numOfWatchers").innerHTML =
-    "Number of Watchers: " + numberOfWatchers;
+function updateConnection(connection) {
   if (connection.connectionState === "connected") {
     document.getElementById("circle").style.background = "green";
     document.getElementById("connectionStatus").innerHTML =
@@ -126,11 +120,6 @@ function updateConnection(connection, numberOfWatchers) {
   }
   if (connection.connectionState === "new") {
     document.getElementById("circle").style.background = "blue";
-    document.getElementById("connectionStatus").innerHTML =
-      connection.connectionState;
-  }
-  if (numberOfWatchers === 0) {
-    document.getElementById("circle").style.background = "red";
     document.getElementById("connectionStatus").innerHTML =
       connection.connectionState;
   }

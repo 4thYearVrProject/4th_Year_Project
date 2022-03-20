@@ -7,20 +7,20 @@
   </head>
   <body>
 
-    <section class="select">
-      <label for="videoSourceLeft">Video source left: </label>
-      <select id="videoSourceLeft"></select>
-    </section>
-
-    <section class="select">
-      <label for="videoSourceRight">Video source right: </label>
-      <select id="videoSourceRight"></select>
-    </section>
-
 	  <div class="playerLeft">
+      <h2>Left Video</h2>
+      <section class="select">
+        <label for="videoSourceLeft">Video source left: </label>
+        <select id="videoSourceLeft"></select>
+      </section>
 	  	<video id="videoLeft" autoplay muted></video>
 	  </div>
-    <div class="playerRight">
+    <div class="playerRight"></div>
+      <h2>Right Video</h2>
+      <section class="select">
+        <label for="videoSourceRight">Video source right: </label>
+        <select id="videoSourceRight"></select>
+      </section>
 	  	<video id="videoRight"  autoplay muted></video>
 	  </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -31,7 +31,6 @@
       <h3><strong>Connection Status: </strong></h3>
       <span id="circle"></span>
       <label id="connectionStatus">closed</label>
-      <div id="numOfWatchers">Number of Watchers: 0</div>
     </div>
   </body>
 </html>
