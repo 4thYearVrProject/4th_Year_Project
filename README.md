@@ -1,7 +1,3 @@
-# Camera_Computer:
-
-# Headset_Computer:
-
 # How to run
 
 ## Hosting the stream
