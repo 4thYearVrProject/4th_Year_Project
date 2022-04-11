@@ -38,3 +38,9 @@ On this page the video and audio sources can be selected.
     > https://(Host IP Address):4040/Headset_Computer/View.html
 
 3. The viewing can be terminated by closing the browser window.
+
+## Video
+
+Here is the link to the video that was made for this project
+
+   > https://youtu.be/_7_6nEvdUVw
